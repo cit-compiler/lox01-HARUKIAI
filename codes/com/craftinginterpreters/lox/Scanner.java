@@ -135,16 +135,16 @@ public class Scanner {
         addToken(NUMBER,
             Double.parseDouble(source.substring(start, current)));
       }
-    private void string() {
-        while (peek() != '"' && !isAtEnd()) {
-          if (peek() == '\n') line++;
-          advance();
-        }
+      private void string() {
+        while (!isAtEnd()) {
+            if (peek() == '\n'){
+                line++;
+            }
     
         if (isAtEnd()) {
           Lox.error(line, "Unterminated string.");
           return;
-        }
+        }}
     
         // The closing ".
         advance();
