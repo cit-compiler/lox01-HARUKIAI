@@ -1,6 +1,7 @@
 package com.craftinginterpreters.lox;
 
 class AstPrinter implements Expr.Visitor<String> {
+    // Expr を文字列に変換するメソッド
     String print(Expr expr) {
         return expr.accept(this);
     }
@@ -26,20 +27,29 @@ class AstPrinter implements Expr.Visitor<String> {
         return parenthesize(expr.operator.lexeme, expr.right);
     }
 
+    @Override
+    public String visitAssignExpr(Expr.Assign expr) {
+        // 代入式の文字列を生成
+        return parenthesize("assign " + expr.name.lexeme, expr.value);
+    }
+
+    // 親子関係を表すために文字列を括弧で括る
     private String parenthesize(String name, Expr... exprs) {
         StringBuilder builder = new StringBuilder();
 
         builder.append("(").append(name);
         for (Expr expr : exprs) {
-          builder.append(" ");
-          builder.append(expr.accept(this));
+            builder.append(" ");
+            builder.append(expr.accept(this));
         }
         builder.append(")");
 
         return builder.toString();
     }
 
+    // メイン関数で AST を生成して表示
     public static void main(String[] args) {
+        // AST の構築例
         Expr expression = new Expr.Binary(
             new Expr.Unary(
                 new Token(TokenType.MINUS, "-", null, 1),
@@ -48,8 +58,7 @@ class AstPrinter implements Expr.Visitor<String> {
             new Expr.Grouping(
                 new Expr.Literal(45.67)));
 
+        // AST を文字列に変換して出力
         System.out.println(new AstPrinter().print(expression));
     }
-
-
 }
