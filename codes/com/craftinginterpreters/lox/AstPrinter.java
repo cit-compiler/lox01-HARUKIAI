@@ -1,7 +1,7 @@
 package com.craftinginterpreters.lox;
 
 class AstPrinter implements Expr.Visitor<String> {
-    // Expr を文字列に変換するメソッド
+    // Expr 繧呈枚蟄怜?励↓螟画鋤縺吶ｋ繝｡繧ｽ繝?繝?
     String print(Expr expr) {
         return expr.accept(this);
     }
@@ -29,11 +29,15 @@ class AstPrinter implements Expr.Visitor<String> {
 
     @Override
     public String visitAssignExpr(Expr.Assign expr) {
-        // 代入式の文字列を生成
         return parenthesize("assign " + expr.name.lexeme, expr.value);
     }
 
-    // 親子関係を表すために文字列を括弧で括る
+    @Override
+    public String visitVariableExpr(Expr.Variable expr) {
+        return expr.name.lexeme; // 螟画焚蜷阪ｒ縺昴?ｮ縺ｾ縺ｾ譁?蟄怜?励→縺励※霑斐☆
+    }
+
+    // 隕ｪ蟄宣未菫ゅｒ陦ｨ縺吶◆繧√↓譁?蟄怜?励ｒ諡ｬ蠑ｧ縺ｧ諡ｬ繧?
     private String parenthesize(String name, Expr... exprs) {
         StringBuilder builder = new StringBuilder();
 
@@ -47,9 +51,9 @@ class AstPrinter implements Expr.Visitor<String> {
         return builder.toString();
     }
 
-    // メイン関数で AST を生成して表示
+    // 繝｡繧､繝ｳ髢｢謨ｰ縺ｧ AST 繧堤函謌舌＠縺ｦ陦ｨ遉ｺ
     public static void main(String[] args) {
-        // AST の構築例
+        // AST 縺ｮ讒狗ｯ我ｾ?
         Expr expression = new Expr.Binary(
             new Expr.Unary(
                 new Token(TokenType.MINUS, "-", null, 1),
@@ -58,7 +62,7 @@ class AstPrinter implements Expr.Visitor<String> {
             new Expr.Grouping(
                 new Expr.Literal(45.67)));
 
-        // AST を文字列に変換して出力
+        // AST 繧呈枚蟄怜?励↓螟画鋤縺励※蜃ｺ蜉?
         System.out.println(new AstPrinter().print(expression));
     }
 }
